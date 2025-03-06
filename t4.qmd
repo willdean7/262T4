@@ -33,7 +33,7 @@ library(purrr)
 
 ```{r}
 #bring in the autopower function and define 'possible_cars'
-source("../R/Auto_Power.R")
+source("Assignment_4/autopower.R")
 # generate a structure to store info on our possible cars
 possible_cars = data.frame(name = c("A","B","C", "D"),mass=c(10000,65000,38000,5000), area = c(22,30,22,10))
 
@@ -44,7 +44,7 @@ speed_base = 80 * 0.28
 # because I have one mass and area for each car and only 1 speed
 # I can estimate power for each car type
 # add to the data structure
-possible_cars$power = auto_power(V=speed_base, A = possible_cars$area, m=possible_cars$mass)
+possible_cars$power = autopower(V=speed_base, A = possible_cars$area, m=possible_cars$mass)
 
 head(possible_cars)
 
@@ -63,7 +63,7 @@ possible_car
 PMAP
 
 ```{r}
-possible_cars1 = data.frame
+
 
 
 ```
