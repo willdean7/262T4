@@ -1,0 +1,45 @@
+---
+title: "Power"
+authors: Will and Alon
+format: 
+  html:
+    code-fold: show
+    toc: true
+    number-sections: true
+    embed-resources: true
+editor: visual
+execute:
+  echo: true
+  message: false
+  warning: false
+---
+
+## Assignment 4
+
+For this assignment write a new Quartro document based on the analysis of power required for different \*possible_cars\* from today's class
+
+\* Add an additional super light car with mass 5,000 kg and a surface area 10m2
+
+\* Compute the mean and maximum power for Cars A, B, C and for your new car, assuming that average highway speed is 80 km/hr with a standard deviation of 10km/hr;  Use 2 different methods to compute the mean and maximum power for each car type; a) \*\*FOR\*\* loop and b) the \*\*pmap\*\* function from \*\*purr\*\*
+
+\* Create two boxplots (one for each method (\*\*FOR\*\* and \*\*pmap\*\*) that show the range of power consumption (across sampled speeds) for each car type.
+
+```{r}
+#libraries
+library(tidyverse)
+library(here)
+library(purrr)
+```
+
+FOR LOOP
+
+```{r}
+#using for loop
+
+```
+
+PMAP
+
+```{r}
+
+```
