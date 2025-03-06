@@ -33,7 +33,7 @@ library(purrr)
 
 ```{r}
 #bring in the autopower function and define 'possible_cars'
-source("Assignment_4/autopower.R")
+source("autopower.R")
 # generate a structure to store info on our possible cars
 possible_cars = data.frame(name = c("A","B","C", "D"),mass=c(10000,65000,38000,5000), area = c(22,30,22,10))
 
