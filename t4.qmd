@@ -56,11 +56,23 @@ ggplot(possible_cars, aes(x=mass, y=power, fill=as.factor(area)))+geom_col()+lab
 FOR LOOP
 
 ```{r}
-possible_car
+possible_cars
 
 powerall2 = as.data.frame(matrix(nrow=length(speeds), ncol=nrow(possible_cars)))
 
+for (i in 1:nrow(possible_cars)) {
+  powerall2[,i] = auto_power(A=possible_cars$area[i], m=possible_cars$mass[i], V=speeds)
+}
 
+colnames(powerall2) = possible_cars$name
+
+#turn columns in to rows
+powerallr2 = powerall2 %>% pivot_longer(cols=everything(), names_to="car", values_to="power")
+head(powerallr2)
+
+# boxplot
+loop_plot = ggplot(powerallr2, aes(car,power, fill=car))+geom_boxplot()+ggtitle("For Loop")
+loop_plot
 ```
 
 PMAP
