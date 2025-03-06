@@ -64,6 +64,8 @@ PMAP
 
 ```{r}
 
+powerall3 = pmap(list(A = possible_cars$area, m=possible_cars$mass), autopower, V=speeds)
 
+powerall3 = as.data.frame(powerall2, col.names=possible_cars$name)
 
 ```
