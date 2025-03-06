@@ -68,4 +68,19 @@ powerall3 = pmap(list(A = possible_cars$area, m=possible_cars$mass), autopower, 
 
 powerall3 = as.data.frame(powerall2, col.names=possible_cars$name)
 
+# for plotting sometimes its useful to turn columns in to rows
+powerallr3 = powerall3 |>
+  pivot_longer(cols=everything(), names_to="car", values_to="power")
+head(powerallr2)
+
+# quick visualization
+
+method3_plot = ggplot(powerallr3, aes(car,power, fill=car))+geom_boxplot()+ggtitle("pmap")
+method3_plot
+
+# put plots side by side
+# to confirm that they look similar
+ggarrange(method1_plot, method2_plot, method3_plot, nrow=3)
+
+
 ```
