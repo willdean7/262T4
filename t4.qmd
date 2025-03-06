@@ -31,10 +31,32 @@ library(here)
 library(purrr)
 ```
 
+```{r}
+#bring in the autopower function and define 'possible_cars'
+source("../R/Auto_Power.R")
+# generate a structure to store info on our possible cars
+possible_cars = data.frame(name = c("A","B","C"),mass=c(10000,65000,38000), area = c(22,30,22))
+
+# first look at how results vary for mean speed say 100km/hr
+# do conversion
+speed_base = 100 * 0.28
+
+# because I have one mass and area for each car and only 1 speed
+# I can estimate power for each car type
+# add to the data structure
+possible_cars$power = auto_power(V=speed_base, A = possible_cars$area, m=possible_cars$mass)
+
+head(possible_cars)
+
+# show results                         
+ggplot(possible_cars, aes(x=mass, y=power, fill=as.factor(area)))+geom_col()+labs(y="Power W", x="Mass (kg)", fill="Area (m2)")
+```
+
 FOR LOOP
 
 ```{r}
 #using for loop
+
 
 ```
 
