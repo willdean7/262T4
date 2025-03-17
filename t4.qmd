@@ -68,11 +68,20 @@ for (i in 1:nrow(possible_cars)) {
 # Assign column names to powerall2
 colnames(powerall2) <- possible_cars$name
 
+# Compute mean and max power for each car using the FOR loop
+mean_power_for <- apply(powerall2, 2, mean)  # Mean power for each car type
+max_power_for <- apply(powerall2, 2, max)    # Max power for each car type
+
+# Display mean and max power for FOR loop method
+print("Mean Power (FOR loop):")
+print(mean_power_for)
+print("Max Power (FOR loop):")
+print(max_power_for)
+
+
 # Turn columns into rows for ggplot
 powerallr2 <- powerall2 %>% pivot_longer(cols = everything(), names_to = "car", values_to = "power")
 
-# View first few rows of reshaped data
-head(powerallr2)
 
 # Boxplot of power consumption using the FOR loop method
 loop_plot <- ggplot(powerallr2, aes(car, power, fill = car)) + 
@@ -95,12 +104,21 @@ powerall3 <- as.data.frame(powerall3)
 # Assign column names to powerall3
 colnames(powerall3) <- possible_cars$name
 
+# Compute mean and max power for each car using the pmap method
+mean_power_pmap <- apply(powerall3, 2, mean)  # Mean power for each car type
+max_power_pmap <- apply(powerall3, 2, max)    # Max power for each car type
+
+# Display mean and max power for pmap method
+print("Mean Power (pmap):")
+print(mean_power_pmap)
+print("Max Power (pmap):")
+print(max_power_pmap)
+
+
 # Turn columns into rows for ggplot
 powerallr3 <- powerall3 %>%
   pivot_longer(cols = everything(), names_to = "car", values_to = "power")
 
-# View first few rows of reshaped data
-head(powerallr3)
 
 # Boxplot of power consumption using the pmap method
 method3_plot <- ggplot(powerallr3, aes(car, power, fill = car)) + 
@@ -108,10 +126,13 @@ method3_plot <- ggplot(powerallr3, aes(car, power, fill = car)) +
   ggtitle("pmap")
 method3_plot
 
-# ----------- Combine Plots -----------
 
+```
+
+Final plot
+
+```{r}
 # Combine both boxplots into one plot using patchwork
 final_plot <- loop_plot + method3_plot
 final_plot
-
 ```
