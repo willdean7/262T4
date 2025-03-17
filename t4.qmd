@@ -29,6 +29,7 @@ For this assignment write a new Quartro document based on the analysis of power 
 library(tidyverse)
 library(here)
 library(purrr)
+library(patchwork)
 ```
 
 ```{r}
@@ -39,9 +40,9 @@ possible_cars = data.frame(name = c("A","B","C", "D"),mass=c(10000,65000,38000,5
 
 # first look at how results vary for mean speed say 100km/hr
 # do conversion
-speed_base = 80 * 0.28
+speed_base = 80 
 nsample = 200
-speeds = rnorm(mean=speed_base, sd=0.1*speed_base, nsample)
+speeds = rnorm(mean=speed_base, sd=10, n = nsample)
 # because I have one mass and area for each car and only 1 speed
 # I can estimate power for each car type
 # add to the data structure
@@ -56,22 +57,27 @@ ggplot(possible_cars, aes(x=mass, y=power, fill=as.factor(area)))+geom_col()+lab
 FOR LOOP
 
 ```{r}
-possible_cars
+# Create an empty data frame to store the power results
+powerall2 <- as.data.frame(matrix(nrow = length(speeds), ncol = nrow(possible_cars)))
 
-powerall2 = as.data.frame(matrix(nrow=length(speeds), ncol=nrow(possible_cars)))
-
+# Calculate power for each car using a FOR loop
 for (i in 1:nrow(possible_cars)) {
-  powerall2[,i] = auto_power(A=possible_cars$area[i], m=possible_cars$mass[i], V=speeds)
+  powerall2[, i] <- auto_power(A = possible_cars$area[i], m = possible_cars$mass[i], V = speeds)
 }
 
-colnames(powerall2) = possible_cars$name
+# Assign column names to powerall2
+colnames(powerall2) <- possible_cars$name
 
-#turn columns in to rows
-powerallr2 = powerall2 %>% pivot_longer(cols=everything(), names_to="car", values_to="power")
+# Turn columns into rows for ggplot
+powerallr2 <- powerall2 %>% pivot_longer(cols = everything(), names_to = "car", values_to = "power")
+
+# View first few rows of reshaped data
 head(powerallr2)
 
-# boxplot
-loop_plot = ggplot(powerallr2, aes(car,power, fill=car))+geom_boxplot()+ggtitle("For Loop")
+# Boxplot of power consumption using the FOR loop method
+loop_plot <- ggplot(powerallr2, aes(car, power, fill = car)) + 
+  geom_boxplot() + 
+  ggtitle("For Loop")
 loop_plot
 ```
 
@@ -79,23 +85,33 @@ PMAP
 
 ```{r}
 
-powerall3 = pmap(list(A = possible_cars$area, m=possible_cars$mass), autopower, V=speeds)
 
-powerall3 = as.data.frame(powerall2, col.names=possible_cars$name)
+# Use pmap to apply the auto_power function for each car
+powerall3 <- pmap(list(A = possible_cars$area, m = possible_cars$mass), auto_power, V = speeds)
 
-# for plotting sometimes its useful to turn columns in to rows
-powerallr3 = powerall3 |>
-  pivot_longer(cols=everything(), names_to="car", values_to="power")
-head(powerallr2)
+# Convert powerall3 to a data frame
+powerall3 <- as.data.frame(powerall3)
 
-# quick visualization
+# Assign column names to powerall3
+colnames(powerall3) <- possible_cars$name
 
-method3_plot = ggplot(powerallr3, aes(car,power, fill=car))+geom_boxplot()+ggtitle("pmap")
+# Turn columns into rows for ggplot
+powerallr3 <- powerall3 %>%
+  pivot_longer(cols = everything(), names_to = "car", values_to = "power")
+
+# View first few rows of reshaped data
+head(powerallr3)
+
+# Boxplot of power consumption using the pmap method
+method3_plot <- ggplot(powerallr3, aes(car, power, fill = car)) + 
+  geom_boxplot() + 
+  ggtitle("pmap")
 method3_plot
 
-# put plots side by side
-# to confirm that they look similar
-ggarrange(method1_plot, method2_plot, method3_plot, nrow=3)
+# ----------- Combine Plots -----------
 
+# Combine both boxplots into one plot using patchwork
+final_plot <- loop_plot + method3_plot
+final_plot
 
 ```
