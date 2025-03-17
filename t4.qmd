@@ -95,35 +95,36 @@ PMAP
 ```{r}
 
 
-# Use pmap to apply the auto_power function for each car
+# Use pmap to apply the auto_power function for each car type with speeds
+# pmap iterates over the surface area (A), mass (m), and speed samples (V)
 powerall3 <- pmap(list(A = possible_cars$area, m = possible_cars$mass), auto_power, V = speeds)
 
-# Convert powerall3 to a data frame
+# Convert the result to a data frame for easier manipulation
 powerall3 <- as.data.frame(powerall3)
 
-# Assign column names to powerall3
+# Assign car names as column names for the power data
 colnames(powerall3) <- possible_cars$name
 
-# Compute mean and max power for each car using the pmap method
-mean_power_pmap <- apply(powerall3, 2, mean)  # Mean power for each car type
-max_power_pmap <- apply(powerall3, 2, max)    # Max power for each car type
+# Calculate the mean and max power for each car type using apply()
+mean_power_pmap <- apply(powerall3, 2, mean)
+max_power_pmap <- apply(powerall3, 2, max)
 
-# Display mean and max power for pmap method
+# Display the results
 print("Mean Power (pmap):")
 print(mean_power_pmap)
 print("Max Power (pmap):")
 print(max_power_pmap)
 
-
-# Turn columns into rows for ggplot
+# Convert the power data to long format for plotting
 powerallr3 <- powerall3 %>%
   pivot_longer(cols = everything(), names_to = "car", values_to = "power")
 
-
-# Boxplot of power consumption using the pmap method
+# Create a boxplot for power consumption across sampled speeds
 method3_plot <- ggplot(powerallr3, aes(car, power, fill = car)) + 
   geom_boxplot() + 
   ggtitle("pmap")
+
+# Display the plot
 method3_plot
 
 
