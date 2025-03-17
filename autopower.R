@@ -1,4 +1,3 @@
-#
 #' Writing a Function for Automobile Power Generation
 #' @param V is vehicle speed (assuming no headwind) in m/s
 #' @param m is vehicle mass in kg
